@@ -1,0 +1,23 @@
+{
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#c50bc8"
+    },
+    "cSpell.words": [
+        "attiny",
+        "avrdude",
+        "DDRB",
+        "lfuse",
+        "MOSI",
+        "OCRA",
+        "platformio",
+        "PORTB",
+        "TCCR"
+    ],
+    "files.associations": {
+        "*.toml": "ini",
+        "interrupt.h": "c",
+        "stdint.h": "c",
+        "delay.h": "c",
+        "assert.h": "c"
+    }
+}
