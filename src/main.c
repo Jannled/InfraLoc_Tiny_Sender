@@ -16,18 +16,20 @@
 // avrdude -c stk500v1 -P COM10 -b 19200 -p attiny13a -U lfuse:w:0x79:m
 
 /* --- BEGIN CONFIG --- */
-const uint8_t channel = CHANNEL;
+const uint8_t channel = CHANNEL - 1;
 /* --- END CONFIG --- */
 
 const uint8_t channelTOP[4] = {240, 160, 120, 96}; // 20kHz, 30kHz, 40kHz, 50kHz for FREQ = 4.8MHz
+
+#define LED_PIN PB4
 
 void setup()
 {
 	static_assert(channel < sizeof(channelTOP), "The channel is not in the allowed range!");
 
 	DDRB |= _BV(DDB1); // Set GP1 as Output
-	DDRB |= _BV(DDB3); // Set GP3 as Output
-	DDRB &= ~_BV(DDB4); // Set GP4 as Input
+	DDRB |= _BV(DDB4); // Set GP4 as Output
+	//DDRB &= ~_BV(DDB4); // Set GP4 as Input
 
 	// Enter Phase correct PWM Mode with OCRA being the TOP Value
 	// WGM00 - WGM02		Fast PWM with OCRA being the TOP Value (Waveform Generator Mode)
@@ -44,18 +46,18 @@ void setup()
 
 void loop()
 {
-	PORTB |= _BV(PB3); // Set GP0 to HIGH
+	PORTB |= _BV(LED_PIN); // Set GP0 to HIGH
 	_delay_ms(100);
 
 	for(uint8_t i=0; i<channel; i++)
 	{
-		PORTB &= ~_BV(PB3); // Set GP0 to LOW
+		PORTB &= ~_BV(LED_PIN); // Set GP0 to LOW
 		_delay_ms(100);
-		PORTB |= _BV(PB3); // Set GP0 to HIGH
+		PORTB |= _BV(LED_PIN); // Set GP0 to HIGH
 		_delay_ms(100);
 	}
 
-	PORTB &= ~_BV(PB3); // Set GP0 to LOW
+	PORTB &= ~_BV(LED_PIN); // Set GP0 to LOW
 	_delay_ms(5000);
 }
 
