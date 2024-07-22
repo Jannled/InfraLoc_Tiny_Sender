@@ -19,7 +19,7 @@
 const uint8_t channel = CHANNEL - 1;
 /* --- END CONFIG --- */
 
-const uint8_t channelTOP[4] = {240, 160, 120, 96}; // 20kHz, 30kHz, 40kHz, 50kHz for FREQ = 4.8MHz
+const uint8_t channelTOP[4] = {80, 64, 53, 46}; // 12.500kHz, 15.625kHz, 18.750kHz, 21.875kHz for FREQ = 1MHz //
 
 #define LED_PIN PB4
 
@@ -35,12 +35,11 @@ void setup()
 	// WGM00 - WGM02		Fast PWM with OCRA being the TOP Value (Waveform Generator Mode)
 	// COM0B1				Set Pin COM0B LOW on Compare Match and HIGH on TOP
 	// CS00					Enable Clock (Clock Select)
-	TCCR0A = _BV(COM0B1) | _BV(WGM00); // WGM01 left out = Phase Correct
-	TCCR0B = _BV(WGM02) | _BV(CS00);
+	TCCR0A = _BV(COM0B1) | _BV(WGM00); // OC0B Pin connected, WGM01 left out = Phase Correct
+	TCCR0B = _BV(WGM02) | _BV(CS01); // Clock Divide 8
 
-	// Using Phase Correct PWM to half the F_CPU of 9.6MHz, because 4.8MHz calibration is bad
-	// 4.8 MHz = 9600000 Hz
-	OCR0A = channelTOP[channel]; // 200 // 160
+	// The external clock provides 16MHz reference
+	OCR0A = channelTOP[channel];
 	OCR0B = OCR0A/2;
 }
 
