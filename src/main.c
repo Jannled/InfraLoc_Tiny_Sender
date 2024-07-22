@@ -19,7 +19,13 @@
 const uint8_t channel = CHANNEL - 1;
 /* --- END CONFIG --- */
 
-const uint8_t channelTOP[4] = {80, 64, 53, 46}; // 12.500kHz, 15.625kHz, 18.750kHz, 21.875kHz for FREQ = 1MHz //
+#if F_CPU == 16000000L
+const uint8_t channelTOP[4] = {80, 64, 53, 46}; // 12.500kHz, 15.625kHz, 18.750kHz, 21.875kHz for FREQ = 1MHz
+#elif F_CPU == 9600000L
+const uint8_t channelTOP[4] = {46, 38, 32, 27}; // 12.500kHz, 15.625kHz, 18.750kHz, 21.875kHz for FREQ = 600KHz
+#else 
+#error "A frequency was specified, that was not considered"
+#endif
 
 #define LED_PIN PB4
 
