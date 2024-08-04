@@ -40,13 +40,13 @@ void setup()
 	// Enter Phase correct PWM Mode with OCRA being the TOP Value
 	// WGM00 - WGM02		Fast PWM with OCRA being the TOP Value (Waveform Generator Mode)
 	// COM0B1				Set Pin COM0B LOW on Compare Match and HIGH on TOP
-	// CS00					Enable Clock (Clock Select)
+	// CS01					Enable Clock (Prescaler: 8)
 	TCCR0A = _BV(COM0B1) | _BV(WGM00); // OC0B Pin connected, WGM01 left out = Phase Correct
 	TCCR0B = _BV(WGM02) | _BV(CS01); // Clock Divide 8
 
-	// The external clock provides 16MHz reference
-	OCR0A = channelTOP[channel];
-	OCR0B = OCR0A/2;
+	// TOP = \frac{f_{CPU}}{2 \cdot N \cdot f_{Target}}
+	OCR0A = channelTOP[channel]; // TOP Value to Fine Tune PWM Frequency
+	OCR0B = OCR0A/2; // 50% Duty Cycle
 }
 
 void loop()
